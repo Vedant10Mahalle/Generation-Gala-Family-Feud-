@@ -1,0 +1,23 @@
+{
+  "faceoff": [
+    {
+      "question": "Name something people forget at home",
+      "answers": [
+        { "text": "Phone", "points": 40 },
+        { "text": "Wallet", "points": 30 },
+        { "text": "Keys", "points": 20 },
+        { "text": "Charger", "points": 10 }
+      ]
+    }
+  ],
+  "fastmoney": [
+    {
+      "question": "Name a red fruit",
+      "answers": [
+        { "text": "Apple", "points": 50 },
+        { "text": "Strawberry", "points": 30 },
+        { "text": "Cherry", "points": 20 }
+      ]
+    }
+  ]
+}
