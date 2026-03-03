@@ -2,7 +2,7 @@ const socket = io();
 let state = null;
 let questions = null;
 
-fetch("../data/round1.json")
+fetch("/data/round1.json")
   .then(res => res.json())
   .then(data => questions = data.questions);
 
