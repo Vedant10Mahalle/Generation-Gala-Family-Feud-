@@ -9,44 +9,50 @@ const io = new Server(server);
 
 app.use(express.static(path.join(__dirname, "public")));
 
-let gameState = {
-  round: "faceoff",
+function createState() {
+  return {
+    currentQuestion: 0,
+    revealed: [],
+    controlTeam: null,
+    teamA: { name: "Team A", score: 0, strikes: 0 },
+    teamB: { name: "Team B", score: 0, strikes: 0 },
+    announcement: ""
+  };
+}
 
-  currentFaceoffQuestion: 0,
-  currentFastQuestion: 0,
+let round1State = createState();
+let round2State = createState();
 
-  faceoffTeams: {
-    A: { name: "Team A", score: 0, strikes: 0 },
-    B: { name: "Team B", score: 0, strikes: 0 }
-  },
-
-  fastMoneyTeams: {
-    A: { name: "Team A", score: 0 },
-    B: { name: "Team B", score: 0 }
-  },
-
-  revealedAnswers: [],
-  controlTeam: null,
-  announcement: "",
-
-  fastMoney: {
-    timer: 20,
-    running: false,
-    revealed: []
-  }
-};
-
+/* ROUND 1 SOCKET */
 io.on("connection", (socket) => {
 
-  socket.emit("stateUpdate", gameState);
+  socket.emit("round1Update", round1State);
+  socket.emit("round2Update", round2State);
 
-  socket.on("updateState", (newState) => {
-    gameState = newState;
-    io.emit("stateUpdate", gameState);
+  socket.on("round1Update", (state) => {
+    round1State = state;
+    io.emit("round1Update", round1State);
+  });
+
+  socket.on("round2Update", (state) => {
+    round2State = state;
+    io.emit("round2Update", round2State);
+  });
+
+  socket.on("round1Reset", () => {
+    round1State = createState();
+    io.emit("round1Update", round1State);
+  });
+
+  socket.on("round2Reset", () => {
+    round2State = createState();
+    io.emit("round2Update", round2State);
   });
 
 });
 
-server.listen(3000, () => {
-  console.log("Server running on http://localhost:3000");
+const PORT = 3000;
+
+server.listen(PORT, () => {
+  console.log("Server running on port 3000");
 });
